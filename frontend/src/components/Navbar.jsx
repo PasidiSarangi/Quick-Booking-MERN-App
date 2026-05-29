@@ -7,7 +7,7 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -19,28 +19,47 @@ function Navbar() {
         </Link>
       </div>
 
-      <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/rooms">Rooms</Link>
-        <Link to="/my-bookings">My Bookings</Link>
+     <div className="nav-links">
+  <Link to="/">Home</Link>
 
-        {user?.role === "admin" && <Link to="/admin/rooms">Admin</Link>}
+  {!user && (
+    <>
+      <Link to="/about">About Us</Link>
+      <Link to="/contact">Contact Us</Link>
+    </>
+  )}
 
-        {!user ? (
-          <>
-            <Link to="/login" className="nav-outline-btn">
-              Login
-            </Link>
-            <Link to="/register" className="nav-solid-btn">
-              Register
-            </Link>
-          </>
-        ) : (
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        )}
-      </div>
+  {user?.role === "user" && (
+    <>
+      <Link to="/rooms">Available Rooms</Link>
+      <Link to="/my-bookings">My Bookings</Link>
+      <Link to="/contact">Contact Us</Link>
+    </>
+  )}
+
+  {user?.role === "admin" && (
+    <>
+      <Link to="/admin/rooms">Admin Dashboard</Link>
+      <Link to="/contact">Contact Us</Link>
+    </>
+  )}
+
+  {!user ? (
+    <>
+      <Link to="/login" className="nav-outline-btn">
+        Login
+      </Link>
+
+      <Link to="/register" className="nav-solid-btn">
+        Register
+      </Link>
+    </>
+  ) : (
+    <button className="logout-btn" onClick={handleLogout}>
+      Logout
+    </button>
+  )}
+</div>
     </nav>
   );
 }

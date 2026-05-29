@@ -1,96 +1,136 @@
 import { Link } from "react-router-dom";
 
 function Home() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   return (
-    <div className="home-page">
+    <div className="home-page professional-home">
       <div className="container">
-        <section className="hero-section">
-          <div className="hero-left">
-            <div className="hero-badge">Smart & Simple Booking</div>
-            <h1>
-              Book study rooms
-              <br />
-              without the stress
-            </h1>
-            <p>
-              QuickBook helps students reserve rooms, manage their bookings,
-              and organize study sessions with a clean and modern experience.
+        <section className="pro-hero">
+          <div className="pro-hero-content">
+            <p className="pro-label">Study Room Reservation System</p>
+
+            <h1>Book study spaces with confidence.</h1>
+
+            <p className="pro-description">
+              QuickBook helps students reserve rooms, manage schedules, and keep
+              study sessions organized through a simple booking experience.
             </p>
 
-            <div className="hero-actions">
-              <Link to="/login">
-                <button className="primary-btn">Login</button>
-              </Link>
-
-              <Link to="/register">
-                <button className="secondary-btn">Register</button>
-              </Link>
-            </div>
-
-            <div className="hero-stats">
-              <div className="stat-card">
-                <h3>24/7</h3>
-                <p>Easy booking access</p>
-              </div>
-              <div className="stat-card">
-                <h3>Fast</h3>
-                <p>Reserve in seconds</p>
-              </div>
-              <div className="stat-card">
-                <h3>Clean</h3>
-                <p>Simple student-friendly UI</p>
-              </div>
+            <div className="pro-actions">
+              {user?.role === "user" ? (
+                <>
+                  <Link to="/rooms">
+                    <button className="pro-primary-btn">Browse Rooms</button>
+                  </Link>
+                  <Link to="/my-bookings">
+                    <button className="pro-secondary-btn">My Bookings</button>
+                  </Link>
+                </>
+              ) : user?.role === "admin" ? (
+                <Link to="/admin/rooms">
+                  <button className="pro-primary-btn">Open Dashboard</button>
+                </Link>
+              ) : (
+                <>
+                  <Link to="/login">
+                    <button className="pro-primary-btn">Get Started</button>
+                  </Link>
+                  <Link to="/register">
+                    <button className="pro-secondary-btn">Create Account</button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 
-          <div className="hero-right">
-            <div className="mockup-card">
-              <div className="mockup-top">
-                <span className="dot dot-red"></span>
-                <span className="dot dot-yellow"></span>
-                <span className="dot dot-green"></span>
+          <div className="pro-hero-image">
+            <img
+              src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=80"
+              alt="Study room"
+            />
+            <div className="image-info-card">
+              <h3>Available Study Spaces</h3>
+              <p>Quiet rooms for individual and group study sessions.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="pro-featured">
+          <div className="section-heading">
+            <p className="pro-label">Available Spaces</p>
+            <h2>Featured study rooms</h2>
+          </div>
+
+          <div className="pro-room-grid">
+            <div className="pro-room-card">
+              <img
+                src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80"
+                alt="Study Room A"
+              />
+              <div>
+                <h3>Study Room A</h3>
+                <p>2nd Floor • Capacity 6</p>
+                <Link to={user?.role === "user" ? "/rooms" : "/login"}>
+                  View availability
+                </Link>
               </div>
+            </div>
 
-              <div className="mockup-content">
-                <div className="mockup-box">
-                  <h4>Available Room</h4>
-                  <p>Study Room A</p>
-                  <span>2nd Floor • Capacity 6</span>
-                </div>
+            <div className="pro-room-card">
+              <img
+                src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=800&q=80"
+                alt="Discussion Room"
+              />
+              <div>
+                <h3>Discussion Room</h3>
+                <p>Library Wing • Capacity 8</p>
+                <Link to={user?.role === "user" ? "/rooms" : "/login"}>
+                  View availability
+                </Link>
+              </div>
+            </div>
 
-                <div className="mockup-box">
-                  <h4>Next Booking</h4>
-                  <p>Today • 2:00 PM - 4:00 PM</p>
-                  <span>Reserved for group study</span>
-                </div>
-
-                <div className="mockup-highlight">
-                  <h3>Make your booking smarter</h3>
-                  <p>Track rooms, avoid clashes, and manage reservations easily.</p>
-                </div>
+            <div className="pro-room-card">
+              <img
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80"
+                alt="Conference Room"
+              />
+              <div>
+                <h3>Conference Room</h3>
+                <p>Main Building • Capacity 12</p>
+                <Link to={user?.role === "user" ? "/rooms" : "/login"}>
+                  View availability
+                </Link>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="features-section">
-          <div className="feature-card">
-            <div className="feature-icon">📅</div>
-            <h3>Quick Reservations</h3>
-            <p>Choose a room, pick a time, and confirm your booking in moments.</p>
+        <section className="pro-benefits">
+          <div className="benefit-card">
+            <h3>Easy reservations</h3>
+            <p>Choose a room, select a time slot, and confirm your booking.</p>
           </div>
 
-          <div className="feature-card">
-            <div className="feature-icon">🧑‍💼</div>
-            <h3>Admin Control</h3>
-            <p>Admins can manage rooms and monitor all reservation activity.</p>
+          <div className="benefit-card">
+            <h3>Clear schedules</h3>
+            <p>Keep track of your upcoming study room reservations.</p>
           </div>
 
-          <div className="feature-card">
-            <div className="feature-icon">✅</div>
-            <h3>Better Organization</h3>
-            <p>Keep your study plans structured with a clean booking workflow.</p>
+          <div className="benefit-card">
+            <h3>Admin control</h3>
+            <p>Admins can manage rooms and monitor booking activity.</p>
           </div>
+        </section>
+
+        <section className="pro-cta">
+          <h2>Ready to reserve your study space?</h2>
+          <p>Sign in and start managing your room bookings today.</p>
+
+          <Link to={user?.role === "user" ? "/rooms" : "/login"}>
+            <button className="pro-primary-btn">Continue</button>
+          </Link>
         </section>
       </div>
     </div>

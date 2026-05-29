@@ -2,6 +2,17 @@ import { useNavigate } from "react-router-dom";
 
 function RoomCard({ room }) {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleBookNow = () => {
+    if (!user) {
+      alert("Please login to continue booking.");
+      navigate("/login");
+      return;
+    }
+
+    navigate(`/book/${room._id}`);
+  };
 
   return (
     <div className="room-card">
@@ -28,11 +39,8 @@ function RoomCard({ room }) {
           <span>Study Friendly</span>
         </div>
 
-        <button
-          className="primary-btn room-book-btn"
-          onClick={() => navigate(`/book/${room._id}`)}
-        >
-          Book Now
+        <button className="primary-btn room-book-btn" onClick={handleBookNow}>
+          {user ? "Book Now" : "Login to Book"}
         </button>
       </div>
     </div>

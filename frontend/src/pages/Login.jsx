@@ -49,8 +49,8 @@ function Login() {
             <div className="auth-badge">Welcome Back</div>
             <h1>Login to QuickBook</h1>
             <p>
-              Access your bookings, reserve study rooms, and manage your schedule
-              in one clean dashboard.
+              Use your account to book study rooms. Admins can also log in from
+              the same page using the admin email.
             </p>
 
             <div className="auth-info-card">
@@ -63,7 +63,7 @@ function Login() {
           <div className="auth-right">
             <form className="auth-form" onSubmit={handleSubmit}>
               <h2>Sign In</h2>
-              <p className="auth-subtext">Enter your details to continue</p>
+              <p className="auth-subtext">Enter your email and password</p>
 
               <input
                 type="email"
@@ -88,7 +88,7 @@ function Login() {
               </button>
 
               <p className="auth-footer-text">
-                Don’t have an account? <Link to="/register">Register</Link>
+                New user? <Link to="/register">Create an account</Link>
               </p>
             </form>
           </div>

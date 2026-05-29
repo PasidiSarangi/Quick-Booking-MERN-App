@@ -3,6 +3,8 @@ import axios from "axios";
 
 function AdminRooms() {
   const [rooms, setRooms] = useState([]);
+  const [editingRoomId, setEditingRoomId] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -30,80 +32,174 @@ function AdminRooms() {
     }));
   };
 
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      location: "",
+      capacity: "",
+      image: "",
+    });
+    setEditingRoomId(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/rooms", {
-        ...formData,
-        capacity: Number(formData.capacity),
-      });
+      if (editingRoomId) {
+        await axios.put(`http://localhost:5000/api/rooms/${editingRoomId}`, {
+          ...formData,
+          capacity: Number(formData.capacity),
+        });
+      } else {
+        await axios.post("http://localhost:5000/api/rooms", {
+          ...formData,
+          capacity: Number(formData.capacity),
+        });
+      }
 
-      setFormData({
-        name: "",
-        location: "",
-        capacity: "",
-        image: "",
-      });
-
+      resetForm();
       fetchRooms();
     } catch (error) {
-      console.error("Error creating room:", error);
+      console.error("Error saving room:", error);
+      alert("Failed to save room");
+    }
+  };
+
+  const handleEdit = (room) => {
+    setEditingRoomId(room._id);
+    setFormData({
+      name: room.name,
+      location: room.location,
+      capacity: room.capacity,
+      image: room.image || "",
+    });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this room?");
+
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/api/rooms/${id}`);
+      fetchRooms();
+    } catch (error) {
+      console.error("Error deleting room:", error);
+      alert("Failed to delete room");
     }
   };
 
   return (
-    <div className="container">
-      <h1>Admin - Manage Rooms</h1>
-
-      <form className="form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Room Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="capacity"
-          placeholder="Capacity"
-          value={formData.capacity}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="image"
-          placeholder="Image URL"
-          value={formData.image}
-          onChange={handleChange}
-        />
-        <button type="submit">Add Room</button>
-      </form>
-
-      <div className="grid">
-        {rooms.map((room) => (
-          <div className="card" key={room._id}>
-            <img
-              src={room.image || "https://via.placeholder.com/400x200?text=Room"}
-              alt={room.name}
-              className="card-image"
-            />
-            <h3>{room.name}</h3>
-            <p><strong>Location:</strong> {room.location}</p>
-            <p><strong>Capacity:</strong> {room.capacity}</p>
+    <div className="admin-rooms-page">
+      <div className="container">
+        <div className="admin-page-header">
+          <div>
+            <p className="section-badge">Admin Panel</p>
+            <h1>Manage Rooms</h1>
+            <p>Add, update, and manage study rooms available for booking.</p>
           </div>
-        ))}
+        </div>
+
+        <section className="admin-layout">
+          <form className="admin-room-form" onSubmit={handleSubmit}>
+            <h2>{editingRoomId ? "Edit Room" : "Add New Room"}</h2>
+
+            <div className="form-grid">
+              <input
+                type="text"
+                name="name"
+                placeholder="Room name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="text"
+                name="location"
+                placeholder="Location"
+                value={formData.location}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="number"
+                name="capacity"
+                placeholder="Capacity"
+                value={formData.capacity}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="text"
+                name="image"
+                placeholder="Image URL"
+                value={formData.image}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="admin-form-actions">
+              <button type="submit" className="primary-btn">
+                {editingRoomId ? "Update Room" : "Add Room"}
+              </button>
+
+              {editingRoomId && (
+                <button type="button" className="secondary-btn" onClick={resetForm}>
+                  Cancel Edit
+                </button>
+              )}
+            </div>
+          </form>
+
+          <div className="admin-room-list">
+            <div className="admin-list-header">
+              <h2>All Rooms</h2>
+              <span>{rooms.length} rooms</span>
+            </div>
+
+            {rooms.length === 0 ? (
+              <div className="admin-empty">
+                <h3>No rooms added yet</h3>
+                <p>Add your first room using the form above.</p>
+              </div>
+            ) : (
+              <div className="admin-room-grid">
+                {rooms.map((room) => (
+                  <div className="admin-room-card" key={room._id}>
+                    <img
+                      src={room.image || "https://via.placeholder.com/600x400?text=Room"}
+                      alt={room.name}
+                    />
+
+                    <div className="admin-room-content">
+                      <div>
+                        <h3>{room.name}</h3>
+                        <p>{room.location}</p>
+                        <span>{room.capacity} seats</span>
+                      </div>
+
+                      <div className="room-action-buttons">
+                        <button onClick={() => handleEdit(room)}>Edit</button>
+                        <button
+                          className="delete-room-btn"
+                          onClick={() => handleDelete(room._id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
