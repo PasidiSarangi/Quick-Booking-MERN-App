@@ -14,7 +14,7 @@ const getBookings = async (req, res) => {
 
 const getBookingsByUser = async (req, res) => {
   try {
-    const bookings = await Booking.find({ userName: req.params.userName })
+    const bookings = await Booking.find({ userName: req.user.name })
       .populate("room")
       .sort({ createdAt: -1 });
 
@@ -32,16 +32,25 @@ const createBooking = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const existingBooking = await Booking.findOne({
-      room,
-      date,
-      startTime,
-    });
+    // Advanced overlap validation
+    const existingBookings = await Booking.find({ room, date });
 
-    if (existingBooking) {
-      return res.status(400).json({
-        message: "This room is already booked for that date and start time",
-      });
+    const [startH, startM] = startTime.split(':').map(Number);
+    const [endH, endM] = endTime.split(':').map(Number);
+    const reqStart = startH * 60 + startM;
+    const reqEnd = endH * 60 + endM;
+
+    for (let b of existingBookings) {
+      const [bStartH, bStartM] = b.startTime.split(':').map(Number);
+      const [bEndH, bEndM] = b.endTime.split(':').map(Number);
+      const bStart = bStartH * 60 + bStartM;
+      const bEnd = bEndH * 60 + bEndM;
+
+      if (Math.max(reqStart, bStart) < Math.min(reqEnd, bEnd)) {
+        return res.status(400).json({
+          message: "This room is already booked during the requested time block",
+        });
+      }
     }
 
     const booking = await Booking.create({

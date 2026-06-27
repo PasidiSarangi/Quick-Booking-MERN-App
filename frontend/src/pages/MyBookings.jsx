@@ -9,7 +9,7 @@ function MyBookings() {
   const fetchBookings = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/bookings/user/${user?.name}`
+        `http://localhost:5000/api/bookings/my-bookings`
       );
       setBookings(res.data);
     } catch (error) {

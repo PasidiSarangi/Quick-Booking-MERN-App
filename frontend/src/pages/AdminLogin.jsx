@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -9,6 +10,8 @@ function AdminLogin() {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -16,20 +19,25 @@ function AdminLogin() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    if (formData.email === "admin@gmail.com" && formData.password === "admin123") {
-      const adminUser = {
-        name: "Admin",
-        email: "admin@gmail.com",
-        role: "admin",
-      };
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", formData);
+      
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      localStorage.setItem("user", JSON.stringify(adminUser));
-      navigate("/admin/rooms");
-    } else {
-      alert("Invalid admin email or password");
+      if (res.data.user.role === "admin") {
+        navigate("/admin/rooms");
+      } else {
+        alert("This account does not have admin privileges.");
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || "Invalid admin email or password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,8 +80,8 @@ function AdminLogin() {
                 required
               />
 
-              <button type="submit" className="primary-btn auth-btn">
-                Login as Admin
+              <button type="submit" className="primary-btn auth-btn" disabled={loading}>
+                {loading ? "Logging in..." : "Login as Admin"}
               </button>
             </form>
           </div>

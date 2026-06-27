@@ -5,10 +5,13 @@ import Rooms from "./pages/Rooms";
 import BookRoom from "./pages/BookRoom";
 import MyBookings from "./pages/MyBookings";
 import AdminRooms from "./pages/AdminRooms";
+import AdminLogin from "./pages/AdminLogin";
+import AdminMessages from "./pages/AdminMessages";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import ProtectedRoute from "./components/ProtectedRoute";
  
 function App() {
   return (
@@ -17,9 +20,19 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/rooms" element={<Rooms />} />
-        <Route path="/book/:id" element={<BookRoom />} />
-        <Route path="/my-bookings" element={<MyBookings />} />
-        <Route path="/admin/rooms" element={<AdminRooms />} />
+        <Route path="/book/:id" element={
+          <ProtectedRoute><BookRoom /></ProtectedRoute>
+        } />
+        <Route path="/my-bookings" element={
+          <ProtectedRoute><MyBookings /></ProtectedRoute>
+        } />
+        <Route path="/admin/rooms" element={
+          <ProtectedRoute adminOnly={true}><AdminRooms /></ProtectedRoute>
+        } />
+        <Route path="/admin/messages" element={
+          <ProtectedRoute adminOnly={true}><AdminMessages /></ProtectedRoute>
+        } />
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />

@@ -49,14 +49,15 @@ function Login() {
             <div className="auth-badge">Welcome Back</div>
             <h1>Login to QuickBook</h1>
             <p>
-              Use your account to book study rooms. Admins can also log in from
-              the same page using the admin email.
+              Use your account to book study rooms.
             </p>
 
             <div className="auth-info-card">
-              <h3>Demo Admin Account</h3>
-              <p><strong>Email:</strong> admin@gmail.com</p>
-              <p><strong>Password:</strong> admin123</p>
+              <h3>Admin Access</h3>
+              <p>Are you an administrator?</p>
+              <Link to="/admin/login" className="nav-outline-btn" style={{display: 'inline-block', marginTop: '10px'}}>
+                Go to Admin Portal
+              </Link>
             </div>
           </div>
 
