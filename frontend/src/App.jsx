@@ -7,6 +7,7 @@ import MyBookings from "./pages/MyBookings";
 import AdminRooms from "./pages/AdminRooms";
 import AdminLogin from "./pages/AdminLogin";
 import AdminMessages from "./pages/AdminMessages";
+import AdminBookings from "./pages/AdminBookings";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
@@ -31,6 +32,9 @@ function App() {
         } />
         <Route path="/admin/messages" element={
           <ProtectedRoute adminOnly={true}><AdminMessages /></ProtectedRoute>
+        } />
+        <Route path="/admin/bookings" element={
+          <ProtectedRoute adminOnly={true}><AdminBookings /></ProtectedRoute>
         } />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/login" element={<Login />} />

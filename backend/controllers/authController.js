@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
@@ -22,7 +22,7 @@ const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: "user",
+      role: role || "user",
     });
 
     res.status(201).json({
@@ -42,24 +42,6 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    if (email === "admin@gmail.com" && password === "admin123") {
-      const adminToken = jwt.sign(
-        { email, role: "admin", name: "Admin" },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" }
-      );
-
-      return res.json({
-        message: "Admin login successful",
-        token: adminToken,
-        user: {
-          name: "Admin",
-          email: "admin@gmail.com",
-          role: "admin",
-        },
-      });
-    }
 
     const user = await User.findOne({ email });
 

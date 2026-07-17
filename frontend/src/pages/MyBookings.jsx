@@ -9,7 +9,12 @@ function MyBookings() {
   const fetchBookings = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/bookings/my-bookings`
+        `http://localhost:5000/api/bookings/my-bookings`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       setBookings(res.data);
     } catch (error) {
@@ -19,7 +24,11 @@ function MyBookings() {
 
   const deleteBooking = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/bookings/${id}`);
+      await axios.delete(`http://localhost:5000/api/bookings/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       fetchBookings();
     } catch (error) {
       console.error("Error cancelling booking:", error);
@@ -95,7 +104,9 @@ function MyBookings() {
                     <p>{booking.room?.location || "Location unavailable"}</p>
                   </div>
 
-                  <span>Confirmed</span>
+                  <span className={`status-badge ${booking.status || 'pending'}`}>
+                    {(booking.status || 'pending').toUpperCase()}
+                  </span>
                 </div>
 
                 <div className="booking-details">

@@ -40,6 +40,7 @@ function Navbar() {
   {user?.role === "admin" && (
     <>
       <Link to="/admin/rooms">Manage Rooms</Link>
+      <Link to="/admin/bookings">Manage Bookings</Link>
       <Link to="/admin/messages">Messages</Link>
       <Link to="/contact">Contact Us</Link>
     </>

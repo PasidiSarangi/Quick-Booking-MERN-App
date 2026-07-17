@@ -59,15 +59,15 @@ function AdminMessages() {
                   <div className="admin-room-card" key={msg._id} style={{ padding: "20px", display: "block" }}>
                     <div style={{ marginBottom: "15px" }}>
                       <h3 style={{ margin: "0 0 5px 0" }}>{msg.subject}</h3>
-                      <p style={{ margin: "0", color: "#666", fontSize: "14px" }}>
+                      <p className="msg-meta">
                         From: <strong>{msg.name}</strong> ({msg.email})
                       </p>
-                      <p style={{ margin: "5px 0", color: "#999", fontSize: "12px" }}>
+                      <p className="msg-meta">
                         Received: {new Date(msg.createdAt).toLocaleString()}
                       </p>
                     </div>
 
-                    <div style={{ background: "#f8f9fa", padding: "15px", borderRadius: "8px", marginBottom: "15px" }}>
+                    <div className="msg-box" style={{ padding: "15px", borderRadius: "8px", marginBottom: "15px" }}>
                       <p style={{ margin: "0", whiteSpace: "pre-wrap" }}>{msg.message}</p>
                     </div>
 

@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  font-family: 'Outfit', sans-serif !important;
+}
+
+body {
+  background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #172554);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: #e2e8f0 !important;
+  min-height: 100vh;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Typography Overrides */
+h1, h2, h3, h4, h5, h6 {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em;
+}
+
+p {
+  color: #cbd5e1 !important;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Navbar */
+.navbar, .clean-navbar {
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.brand-link, .clean-brand {
+  color: #fff !important;
+  text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+.nav-links a {
+  color: #e2e8f0 !important;
+}
+
+.nav-links a:hover {
+  color: #818cf8 !important;
+  text-shadow: 0 0 8px rgba(129, 140, 248, 0.5);
+}
+
+/* Cards & Containers */
+.card, .auth-form, .stat-card, .feature-card, .mockup-card, .auth-left, .summary-card, .room-card, .role-card, .portal-card, .empty-state, .image-info-card, .pro-room-card, .benefit-card, .about-card, .contact-card, .booking-preview-card, .how-it-works div, .feature-box, .auth-info-card, .auth-benefit-card, .booking-summary div, .booking-card, .booking-empty, .booking-details, .contact-details-pro, .contact-form-pro, .contact-note, .admin-room-form, .admin-empty, .admin-room-card, .msg-box {
+  background: rgba(30, 41, 59, 0.5) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+  color: #f1f5f9 !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.card:hover, .stat-card:hover, .feature-card:hover, .room-card:hover, .role-card:hover, .portal-card:hover, .pro-room-card:hover, .benefit-card:hover, .booking-card:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+  box-shadow: 0 15px 40px 0 rgba(99, 102, 241, 0.2) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+}
+
+/* Text overrides in cards */
+.card p, .stat-card p, .feature-card p, .room-card p, .role-card p, .portal-card p, .pro-room-card p, .benefit-card p, .about-card p, .contact-card p, .empty-state p, .auth-subtext, .booking-card p, .booking-summary div p, .booking-empty p, .booking-details p, .booking-header p, .contact-line p, .contact-note p, .contact-hero-pro p, .admin-page-header p, .admin-empty p, .admin-room-content p, .admin-list-header span, .msg-meta {
+  color: #94a3b8 !important;
+}
+
+/* Buttons */
+button, .primary-btn, .secondary-btn, .nav-solid-btn, .nav-outline-btn, .auth-btn, .main-btn, .light-btn, .pro-primary-btn, .pro-secondary-btn {
+  border-radius: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  transition: all 0.3s ease !important;
+}
+
+.primary-btn, .nav-solid-btn, .auth-btn, .main-btn, .pro-primary-btn {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4) !important;
+}
+
+.primary-btn:hover, .nav-solid-btn:hover, .auth-btn:hover, .main-btn:hover, .pro-primary-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.6) !important;
+}
+
+.secondary-btn, .nav-outline-btn, .light-btn, .pro-secondary-btn {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.secondary-btn:hover, .nav-outline-btn:hover, .light-btn:hover, .pro-secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Inputs & Forms */
+.form, .auth-form {
+  background: rgba(15, 23, 42, 0.5) !important;
+}
+
+input, textarea, select {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #64748b !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 15px rgba(129, 140, 248, 0.3) !important;
+  outline: none !important;
+}
+
+/* Auth Pages Fixes */
+.auth-left {
+  background: linear-gradient(135deg, rgba(49, 46, 129, 0.7), rgba(79, 70, 229, 0.7), rgba(124, 58, 237, 0.7)), url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.auth-wrapper {
+  background: transparent !important;
+}
+
+/* Rooms & Search */
+.rooms-search-box input {
+  background: rgba(15, 23, 42, 0.6) !important;
+  color: #fff !important;
+}
+
+.section-badge, .hero-badge, .auth-badge, .page-kicker {
+  background: rgba(99, 102, 241, 0.2) !important;
+  color: #a5b4fc !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.2) !important;
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* Overriding white backgrounds completely */
+.professional-home, .info-page, .home-page, .auth-page, .rooms-page, .booking-page, .contact-page-pro, .admin-rooms-page {
+  background: transparent !important;
+}
+
+/* Role Icons */
+.role-icon, .portal-icon {
+  background: rgba(99, 102, 241, 0.2) !important;
+  color: #a5b4fc !important;
+}
+
+/* Stats Section */
+.stats-section {
+  background: rgba(30, 41, 59, 0.6) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Specific text visibility fixes */
+.welcome-box h1, .rooms-header h1, .pro-hero-content h1, .info-hero h1, .booking-header h1, .contact-hero-pro h1, .admin-page-header h1 {
+  color: #fff !important;
+}
+
+.contact-line span {
+  color: #a5b4fc !important;
+  font-weight: 700 !important;
+}
+
+.clean-links a {
+  color: #cbd5e1 !important;
+}
+
+.clean-links a:hover {
+  color: #fff !important;
+}
+
+/* Room details overrides */
+.room-capacity {
+  background: rgba(99, 102, 241, 0.2) !important;
+  color: #a5b4fc !important;
+}
+.room-features span {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #cbd5e1 !important;
+}
+.room-location {
+  color: #94a3b8 !important;
+}
+
+/* Preview Items */
+.preview-item {
+  background: rgba(15, 23, 42, 0.4) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+.preview-item.active {
+  background: rgba(99, 102, 241, 0.2) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+}
+.preview-item span {
+  background: rgba(30, 41, 59, 0.8) !important;
+}
+.preview-item h4 {
+  color: #fff !important;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.status-badge.pending {
+  background: rgba(234, 179, 8, 0.2) !important;
+  color: #fde047 !important;
+  border: 1px solid rgba(234, 179, 8, 0.4) !important;
+}
+.status-badge.accepted {
+  background: rgba(34, 197, 94, 0.2) !important;
+  color: #86efac !important;
+  border: 1px solid rgba(34, 197, 94, 0.4) !important;
+}
+.status-badge.rejected {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #fca5a5 !important;
+  border: 1px solid rgba(239, 68, 68, 0.4) !important;
+}

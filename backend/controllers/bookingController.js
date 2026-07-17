@@ -33,7 +33,7 @@ const createBooking = async (req, res) => {
     }
 
     // Advanced overlap validation
-    const existingBookings = await Booking.find({ room, date });
+    const existingBookings = await Booking.find({ room, date, status: { $ne: 'rejected' } });
 
     const [startH, startM] = startTime.split(':').map(Number);
     const [endH, endM] = endTime.split(':').map(Number);
@@ -79,9 +79,34 @@ const deleteBooking = async (req, res) => {
   }
 };
 
+const updateBookingStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    
+    if (!['pending', 'accepted', 'rejected'].includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    ).populate('room');
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    res.json(booking);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update booking status" });
+  }
+};
+
 module.exports = {
   getBookings,
   getBookingsByUser,
   createBooking,
   deleteBooking,
+  updateBookingStatus,
 };

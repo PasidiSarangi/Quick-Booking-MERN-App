@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import axios from "axios";
 import "./index.css";
+import "./premium.css";
 
 axios.interceptors.request.use(
   (config) => {
