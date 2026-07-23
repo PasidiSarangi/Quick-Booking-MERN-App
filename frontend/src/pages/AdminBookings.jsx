@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useToast } from "../context/ToastContext";
 
 function AdminBookings() {
+  const toast = useToast();
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
@@ -31,10 +33,11 @@ function AdminBookings() {
           },
         }
       );
+      toast.success(`Booking status updated to ${status}`);
       fetchBookings();
     } catch (error) {
       console.error("Error updating booking status:", error);
-      alert("Failed to update status");
+      toast.error("Failed to update booking status");
     }
   };
 

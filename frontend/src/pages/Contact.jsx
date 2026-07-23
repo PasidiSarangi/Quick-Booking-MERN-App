@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
+import { useToast } from "../context/ToastContext";
 
 function Contact() {
+  const toast = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,10 +26,10 @@ function Contact() {
 
     try {
       await axios.post("http://localhost:5000/api/contact", formData);
-      alert("Message sent successfully! Our team will get back to you soon.");
+      toast.success("Message sent successfully! Our team will get back to you soon.");
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
-      alert("Failed to send message. Please try again later.");
+      toast.error("Failed to send message. Please try again later.");
     } finally {
       setLoading(false);
     }

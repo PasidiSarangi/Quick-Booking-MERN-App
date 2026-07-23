@@ -1,9 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { useToast } from "../context/ToastContext";
 
 function Login() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -29,13 +31,15 @@ function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
+      toast.success("Welcome back! Login successful.");
+
       if (res.data.user.role === "admin") {
         navigate("/admin/rooms");
       } else {
         navigate("/rooms");
       }
     } catch (error) {
-      alert(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }

@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { useToast } from "../context/ToastContext";
 
 function BookRoom() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [room, setRoom] = useState(null);
+  const [existingBookings, setExistingBookings] = useState([]);
   const [formData, setFormData] = useState({
-    date: "",
+    date: new Date().toISOString().split("T")[0],
     startTime: "",
     endTime: "",
     purpose: "",
@@ -17,7 +20,8 @@ function BookRoom() {
 
   useEffect(() => {
     fetchRoom();
-  }, []);
+    fetchRoomBookings();
+  }, [id]);
 
   const fetchRoom = async () => {
     try {
@@ -26,6 +30,15 @@ function BookRoom() {
       setRoom(selectedRoom);
     } catch (error) {
       console.error("Error fetching room:", error);
+    }
+  };
+
+  const fetchRoomBookings = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/bookings/room/${id}`);
+      setExistingBookings(res.data);
+    } catch (error) {
+      console.error("Error fetching room bookings:", error);
     }
   };
 
@@ -46,20 +59,22 @@ function BookRoom() {
         room: id,
       });
 
-      alert("Booking created successfully");
+      toast.success("Booking created successfully!");
       navigate("/my-bookings");
     } catch (error) {
-      alert(error.response?.data?.message || "Booking failed");
+      toast.error(error.response?.data?.message || "Booking failed");
     }
   };
+
+  const dateBookings = existingBookings.filter((b) => b.date === formData.date);
 
   return (
     <div className="book-room-page">
       <div className="container">
         <div className="book-room-header">
           <Link to="/rooms">← Back to rooms</Link>
-          <h1>Complete Your Booking</h1>
-          <p>Select a date, time slot, and purpose to reserve your study room.</p>
+          <h1>View Availability & Book</h1>
+          <p>Check room availability for your date and reserve your study space.</p>
         </div>
 
         <div className="book-room-layout">
@@ -79,8 +94,34 @@ function BookRoom() {
                 <p>{room?.capacity || "-"} seats</p>
               </div>
 
-              <div className="summary-note">
-                Your booking will be confirmed after submitting the form.
+              <div className="room-availability-panel">
+                <div className="availability-header">
+                  <strong>Room Availability</strong>
+                  <span className="availability-date font-bold">
+                    {formData.date ? formData.date : "Select a date"}
+                  </span>
+                </div>
+
+                {formData.date ? (
+                  dateBookings.length === 0 ? (
+                    <div className="availability-status-free">
+                      <span className="status-dot green"></span>
+                      All slots available for this date
+                    </div>
+                  ) : (
+                    <div className="availability-booked-list">
+                      <p className="booked-list-title">Existing Reservations:</p>
+                      {dateBookings.map((b, index) => (
+                        <div key={index} className="booked-time-chip">
+                          <span className="status-dot orange"></span>
+                          {b.startTime} - {b.endTime} ({b.status || "booked"})
+                        </div>
+                      ))}
+                    </div>
+                  )
+                ) : (
+                  <p className="availability-hint">Choose a date in the form to check schedule.</p>
+                )}
               </div>
             </div>
           </div>
@@ -89,7 +130,7 @@ function BookRoom() {
             <h2>Booking Details</h2>
 
             <div className="form-row">
-              <label>Date</label>
+              <label>Select Date</label>
               <input
                 type="date"
                 name="date"
@@ -135,7 +176,7 @@ function BookRoom() {
             </div>
 
             <button type="submit" className="booking-submit-btn">
-              Confirm Booking
+              Confirm & Book Room
             </button>
           </form>
         </div>

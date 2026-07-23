@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useToast } from "../context/ToastContext";
 
 function AdminMessages() {
+  const toast = useToast();
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -17,17 +19,23 @@ function AdminMessages() {
     }
   };
 
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this message?");
-    if (!confirmDelete) return;
-
-    try {
-      await axios.delete(`http://localhost:5000/api/contact/${id}`);
-      fetchMessages();
-    } catch (error) {
-      console.error("Error deleting message:", error);
-      alert("Failed to delete message");
-    }
+  const handleDelete = (id) => {
+    toast.confirm({
+      title: "Delete Message",
+      message: "Are you sure you want to delete this user message?",
+      confirmText: "Delete",
+      cancelText: "Cancel",
+      onConfirm: async () => {
+        try {
+          await axios.delete(`http://localhost:5000/api/contact/${id}`);
+          toast.success("Message deleted successfully!");
+          fetchMessages();
+        } catch (error) {
+          console.error("Error deleting message:", error);
+          toast.error("Failed to delete message");
+        }
+      },
+    });
   };
 
   return (

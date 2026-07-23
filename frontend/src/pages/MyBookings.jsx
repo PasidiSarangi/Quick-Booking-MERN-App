@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useToast } from "../context/ToastContext";
 
 function MyBookings() {
+  const toast = useToast();
   const user = JSON.parse(localStorage.getItem("user"));
   const [bookings, setBookings] = useState([]);
 
@@ -22,17 +24,27 @@ function MyBookings() {
     }
   };
 
-  const deleteBooking = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/bookings/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      fetchBookings();
-    } catch (error) {
-      console.error("Error cancelling booking:", error);
-    }
+  const deleteBooking = (id) => {
+    toast.confirm({
+      title: "Cancel Booking",
+      message: "Are you sure you want to cancel this study room reservation?",
+      confirmText: "Yes, Cancel Booking",
+      cancelText: "Keep Booking",
+      onConfirm: async () => {
+        try {
+          await axios.delete(`http://localhost:5000/api/bookings/${id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          toast.success("Booking cancelled successfully!");
+          fetchBookings();
+        } catch (error) {
+          console.error("Error cancelling booking:", error);
+          toast.error("Failed to cancel booking");
+        }
+      },
+    });
   };
 
   useEffect(() => {

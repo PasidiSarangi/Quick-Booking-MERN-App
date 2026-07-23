@@ -103,9 +103,23 @@ const updateBookingStatus = async (req, res) => {
   }
 };
 
+const getBookingsByRoom = async (req, res) => {
+  try {
+    const bookings = await Booking.find({
+      room: req.params.roomId,
+      status: { $ne: "rejected" },
+    }).select("date startTime endTime status userName");
+
+    res.json(bookings);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch room bookings" });
+  }
+};
+
 module.exports = {
   getBookings,
   getBookingsByUser,
+  getBookingsByRoom,
   createBooking,
   deleteBooking,
   updateBookingStatus,

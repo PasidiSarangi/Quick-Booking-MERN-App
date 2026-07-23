@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useToast } from "../context/ToastContext";
 
 function AdminRooms() {
+  const toast = useToast();
   const [rooms, setRooms] = useState([]);
   const [editingRoomId, setEditingRoomId] = useState(null);
 
@@ -51,18 +53,20 @@ function AdminRooms() {
           ...formData,
           capacity: Number(formData.capacity),
         });
+        toast.success("Room updated successfully!");
       } else {
         await axios.post("http://localhost:5000/api/rooms", {
           ...formData,
           capacity: Number(formData.capacity),
         });
+        toast.success("Room added successfully!");
       }
 
       resetForm();
       fetchRooms();
     } catch (error) {
       console.error("Error saving room:", error);
-      alert("Failed to save room");
+      toast.error("Failed to save room");
     }
   };
 
@@ -78,18 +82,23 @@ function AdminRooms() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this room?");
-
-    if (!confirmDelete) return;
-
-    try {
-      await axios.delete(`http://localhost:5000/api/rooms/${id}`);
-      fetchRooms();
-    } catch (error) {
-      console.error("Error deleting room:", error);
-      alert("Failed to delete room");
-    }
+  const handleDelete = (id) => {
+    toast.confirm({
+      title: "Delete Room",
+      message: "Are you sure you want to delete this study room? This action cannot be undone.",
+      confirmText: "Delete",
+      cancelText: "Cancel",
+      onConfirm: async () => {
+        try {
+          await axios.delete(`http://localhost:5000/api/rooms/${id}`);
+          toast.success("Room deleted successfully!");
+          fetchRooms();
+        } catch (error) {
+          console.error("Error deleting room:", error);
+          toast.error("Failed to delete room");
+        }
+      },
+    });
   };
 
   return (

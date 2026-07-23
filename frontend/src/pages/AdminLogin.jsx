@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useToast } from "../context/ToastContext";
 
 function AdminLogin() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -30,12 +32,13 @@ function AdminLogin() {
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       if (res.data.user.role === "admin") {
+        toast.success("Admin login successful. Access granted.");
         navigate("/admin/rooms");
       } else {
-        alert("This account does not have admin privileges.");
+        toast.warning("This account does not have admin privileges.");
       }
     } catch (error) {
-      alert(error.response?.data?.message || "Invalid admin email or password");
+      toast.error(error.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }

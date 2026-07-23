@@ -1,7 +1,31 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Home() {
   const user = JSON.parse(localStorage.getItem("user"));
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    fetchRooms();
+  }, []);
+
+  const fetchRooms = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/rooms");
+      setRooms(res.data);
+    } catch (error) {
+      console.error("Error fetching rooms:", error);
+    }
+  };
+
+  const getRoomBookingLink = (roomName) => {
+    if (!user) return "/login";
+    const found = rooms.find(
+      (r) => r.name.toLowerCase() === roomName.toLowerCase()
+    );
+    return found ? `/book/${found._id}` : "/rooms";
+  };
 
   return (
     <div className="home-page professional-home">
@@ -71,7 +95,7 @@ function Home() {
               <div>
                 <h3>Study Room A</h3>
                 <p>2nd Floor • Capacity 6</p>
-                <Link to={user?.role === "user" ? "/rooms" : "/login"}>
+                <Link to={getRoomBookingLink("Study Room A")}>
                   View availability
                 </Link>
               </div>
@@ -85,7 +109,7 @@ function Home() {
               <div>
                 <h3>Discussion Room</h3>
                 <p>Library Wing • Capacity 8</p>
-                <Link to={user?.role === "user" ? "/rooms" : "/login"}>
+                <Link to={getRoomBookingLink("Discussion Room")}>
                   View availability
                 </Link>
               </div>
@@ -99,7 +123,7 @@ function Home() {
               <div>
                 <h3>Conference Room</h3>
                 <p>Main Building • Capacity 12</p>
-                <Link to={user?.role === "user" ? "/rooms" : "/login"}>
+                <Link to={getRoomBookingLink("Conference Room")}>
                   View availability
                 </Link>
               </div>
